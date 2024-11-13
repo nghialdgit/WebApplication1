@@ -1,0 +1,11 @@
+﻿
+@{
+    ViewData["Title"] = "NhanThamSo";
+}
+
+<h1>NhanThamSo</h1>
+<p>Id: @ViewBag.Id</p>
+<p>Name: @ViewBag.Name</p>
+<a href="5?name=John">Link to NhanThamSo</a> <br />
+<a asp-action="NhanThamSo" asp-route-id="8" 
+asp-route-name="Mai">Link2 to NhanThamSo</a>

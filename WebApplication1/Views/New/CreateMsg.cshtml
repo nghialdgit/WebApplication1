@@ -1,0 +1,17 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Create Message";
+}
+@model Message
+<form action="" method="post">
+    Message: <input asp-for="msg" /><br />
+    Page: <input asp-for="pgnum" /><br />
+    <input type="submit" value="submit" />
+</form>
+@if(ViewBag.Message!=null)
+{
+    <p>Message: @ViewBag.Message.msg</p>
+    <p>Page number: @ViewBag.Message.pgnum</p>
+}
