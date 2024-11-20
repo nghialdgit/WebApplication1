@@ -1,0 +1,87 @@
+﻿@{
+    ViewData["Title"] = "Courses";
+    Layout = "~/Views/Shared/MyLayoutHelper.cshtml";
+}
+@model IEnumerable<Course>
+
+<div class="ms-2 mx-2">
+    <h1>Course List</h1>
+
+    <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
+        <div class="input-group">
+            <input id="keyword" class="form-control" name="keyword"
+                   type="text" placeholder="Search course" />
+            <button id="btnSearch" class="btn btn-primary" type="button">
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
+    </form>
+
+    <div id="content">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Course ID</th>
+                    <th>Title</th>
+                    <th>Credits</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var course in Model)
+                {
+                    <tr>
+                        <td>@course.CourseID</td>
+                        <td>@course.Title</td>
+                        <td>@course.Credits</td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@course.CourseID">Edit</a> |
+                            <a asp-action="Delete" asp-route-id="@course.CourseID">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <ul class="pagination">
+            @for (int i = 1; i <= ViewBag.pageNum; i++)
+            {
+                <li class="page-item" page="@i"
+                @(ViewBag.keyword != null ? "keyword='@ViewBag.keyword'" : "")>
+                    <a class="page-link">@i</a>
+                </li>
+            }
+        </ul>
+    </div>
+
+    <a asp-action="Create" class="btn btn-primary">Create New Course</a>
+</div>
+
+@section Scripts {
+    <script>
+        $('body').on('click', 'li.page-item', function (e) {
+            var page = $(this).attr("page");
+            var keyword = $(this).attr("keyword");
+            var data = { keyword: keyword, pageIndex: page };
+            $.ajax({
+                url: "Course/CourseFilter",
+                data: data,
+                success: function (response) {
+                    $("div#content").html(response);
+                }
+            });
+        });
+
+        $("button#btnSearch").click(function (e) {
+            var keyword = $("#keyword").val();
+            var data = { keyword: keyword };
+            $.ajax({
+                url: "Course/CourseFilter",
+                data: data,
+                success: function (response) {
+                    $("div#content").html(response);
+                }
+            });
+        });
+    </script>
+}

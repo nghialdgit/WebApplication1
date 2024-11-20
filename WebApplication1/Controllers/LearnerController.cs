@@ -14,7 +14,7 @@ namespace WebApplication1.Controllers
         {
             db = context;
         }
-        //khai báo biến toàn cụ pageSize
+        //khai báo biến toàn cục pageSize
         private int pageSize = 3;
         public IActionResult Index(int? mid)
         {
