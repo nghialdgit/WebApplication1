@@ -58,7 +58,7 @@
 
         </ul>
     </div>
-    <a asp-action="Create" class="btn btn-primary">Create New Student</a>
+    <a asp-action="Create" class="btn btn-primary">Create New Learner</a>
 </div>
 @section Scripts{
     <script>
@@ -76,7 +76,7 @@
                 }
             });
         });
-        
+
         $(".nav li").click(function (e) {
             var id = $(this).attr("id");
             var data = { mid: id };
