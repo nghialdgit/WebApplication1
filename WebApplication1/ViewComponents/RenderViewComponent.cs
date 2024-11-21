@@ -9,8 +9,8 @@ namespace WebApplication1.ViewComponents
         public RenderViewComponent()
         {
             MenuItems = new List<MenuItem>() {
-                new MenuItem() {Id=1, Name="Courses", Link="Courses/Index"},
-                new MenuItem() {Id=2, Name="Learner", Link="Learner/Index"}
+                new MenuItem() {Id=1, Name="Courses", Link="/Courses/Index"},
+                new MenuItem() {Id=2, Name="Learner", Link="/Learner/Index"}
             };
         }
         public async Task<IViewComponentResult> InvokeAsync()

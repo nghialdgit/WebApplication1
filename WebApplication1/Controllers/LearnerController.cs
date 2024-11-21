@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WebApplication1.Data;
@@ -9,7 +8,7 @@ namespace WebApplication1.Controllers
 {
     public class LearnerController : Controller
     {
-        private SchoolContext db;           
+        private SchoolContext db;
         public LearnerController(SchoolContext context)
         {
             db = context;
@@ -20,7 +19,7 @@ namespace WebApplication1.Controllers
         {
             var learners = (IQueryable<Learner>)db.Learners
                     .Include(m => m.Major);
-            if (mid != null)
+            if (mid > 0)
             {
                 learners = (IQueryable<Learner>)db.Learners
                     .Where(l => l.MajorID == mid)
@@ -31,18 +30,18 @@ namespace WebApplication1.Controllers
             //trả số trang về view để hiển thị nav-trang
             ViewBag.pageNum = pageNum;
             //lấy dữ liệu trang đầu
-            var result = learners.Take(pageSize).ToList();               
+            var result = learners.Take(pageSize).ToList();
             return View(result);
         }
-        
+
         public IActionResult LearnerFilter(int? mid, int? keyword, int? pageIndex)
         {
             //lấy toàn bộ learners trong dbset chuyển về IQuerrable<Learner> để dùng Lingq
-            var learners = (IQueryable<Learner>) db.Learners;
+            var learners = (IQueryable<Learner>)db.Learners;
             //lấy chỉ số trang, nếu chỉ số trang null thì gán ngầm định bằng 1
-            int page = (int) (pageIndex == null || pageIndex <= 0 ? 1 : pageIndex);
+            int page = (int)(pageIndex == null || pageIndex <= 0 ? 1 : pageIndex);
             //nếu có mid thì lọc learner theo mid (chuyên ngành)
-            if (mid != null)
+            if (mid > 0)
             {
                 learners = learners.Where(l => l.MajorID == mid); //lọc
                 ViewBag.mid = mid; //gửi mid về view để ghi lại trên nav-trang
@@ -50,11 +49,11 @@ namespace WebApplication1.Controllers
             //nếu có keyword thì tìm kiếm theo tên
             if (keyword != null)
             {
-                learners = learners.Where(l => l.EnrollmentDate.Year==2022); //tìm kiếm
+                learners = learners.Where(l => l.EnrollmentDate.Year == 2022); //tìm kiếm
                 ViewBag.keyword = keyword; //gửi keyword về view để ghi lại trên nav-trang
             }
             //tính số trang
-            int pageNum = (int)Math.Ceiling(learners.Count() / (float)pageSize);            
+            int pageNum = (int)Math.Ceiling(learners.Count() / (float)pageSize);
             ViewBag.pageNum = pageNum; //gửi số trang về view để hiển thị nav-trang
             //chọn dữ liệu trong trang hiện tại
             var result = learners.Skip(pageSize * (page - 1))
@@ -62,14 +61,15 @@ namespace WebApplication1.Controllers
                             .Include(m => m.Major);
             return PartialView("LearnerTable", result);
         }
+
         public IActionResult LearnerByMajorID(int mid)
         {
             var learners = db.Learners
-                .Where(l=>l.MajorID==mid)
-                .Include(m=>m.Major).ToList();
+                .Where(l => l.MajorID == mid)
+                .Include(m => m.Major).ToList();
             return PartialView("LearnerTable", learners);
         }
-        
+
         public IActionResult SearchByName(string keyword)
         {
             var learners = db.Learners
@@ -88,8 +88,11 @@ namespace WebApplication1.Controllers
             var majors = new List<SelectListItem>();
             foreach (var item in db.Majors)
             {
-                majors.Add(new SelectListItem { Text = item.MajorName, 
-                    Value = item.MajorID.ToString() });
+                majors.Add(new SelectListItem
+                {
+                    Text = item.MajorName,
+                    Value = item.MajorID.ToString()
+                });
             }
             ViewBag.MajorID = majors;
             //cách 2
@@ -186,10 +189,10 @@ namespace WebApplication1.Controllers
             {
                 return NotFound();
             }
-            if(learner.Enrollments.Count()>0)
+            if (learner.Enrollments.Count() > 0)
             {
                 return Content("This learner has some enrollments, can't delete!");
-            }    
+            }
             return View(learner);
         }
 
