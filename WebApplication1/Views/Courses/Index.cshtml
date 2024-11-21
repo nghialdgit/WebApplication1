@@ -58,30 +58,5 @@
 </div>
 
 @section Scripts {
-    <script>
-        $('body').on('click', 'li.page-item', function (e) {
-            var page = $(this).attr("page");
-            var keyword = $(this).attr("keyword");
-            var data = { keyword: keyword, pageIndex: page };
-            $.ajax({
-                url: "Course/CourseFilter",
-                data: data,
-                success: function (response) {
-                    $("div#content").html(response);
-                }
-            });
-        });
-
-        $("button#btnSearch").click(function (e) {
-            var keyword = $("#keyword").val();
-            var data = { keyword: keyword };
-            $.ajax({
-                url: "Course/CourseFilter",
-                data: data,
-                success: function (response) {
-                    $("div#content").html(response);
-                }
-            });
-        });
-    </script>
+   
 }

@@ -34,7 +34,7 @@ namespace WebApplication1.Controllers
             return View(result);
         }
 
-        public IActionResult LearnerFilter(int? mid, int? keyword, int? pageIndex)
+        public IActionResult LearnerFilter(int? mid, string? keyword, int? pageIndex)
         {
             //lấy toàn bộ learners trong dbset chuyển về IQuerrable<Learner> để dùng Lingq
             var learners = (IQueryable<Learner>)db.Learners;
@@ -49,7 +49,7 @@ namespace WebApplication1.Controllers
             //nếu có keyword thì tìm kiếm theo tên
             if (keyword != null)
             {
-                learners = learners.Where(l => l.EnrollmentDate.Year == 2022); //tìm kiếm
+                learners = learners.Where(l => l.LastName == keyword || l.FirstMidName == keyword); //tìm kiếm
                 ViewBag.keyword = keyword; //gửi keyword về view để ghi lại trên nav-trang
             }
             //tính số trang
